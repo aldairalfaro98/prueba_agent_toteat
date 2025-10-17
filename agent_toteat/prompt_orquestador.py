@@ -38,7 +38,7 @@ Al delegar, envía un breve “delegation brief” que incluya:
 payload_sugerido = {
   "mode": "by_restaurant" | "by_product" | "over_time" | "tops",
   "scope": null | "restaurant" | "product" | "by_restaurant",
-  "time_grain": null | "day" | "week" | "month",        # solo para over_time
+  "time_grain": null | "day" | "iso_week" | "month",        # solo para over_time
   "sort_by": null | "net_total" | "qty_total" | "ticket_net_avg" | ...,
   "sort_dir": "desc" | "asc",
   "top_k": null | entero>0,
@@ -155,7 +155,7 @@ Ejemplos:
 
 “Comparar cantidad vendida por producto en R001 vs R008.”
 
-Evolución en el tiempo (mode="over_time", time_grain="day"|"week"|"month")
+Evolución en el tiempo (mode="over_time", time_grain="day"|"iso_week"|"month")
 
 Qué responde: para cada día/semana/mes: pedidos, líneas, items, ventas brutas/netas, impuestos, propinas, ticket prom/mediano, % propina y % impuestos.
 
