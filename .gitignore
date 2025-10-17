@@ -12,6 +12,7 @@ __pycache__/
 env/
 venv/
 toteat_ambiente/
+myenv/
 
 # Environment files
 .env
