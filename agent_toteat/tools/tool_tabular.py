@@ -26,19 +26,23 @@ def _norm_mode(x: Optional[str]) -> Optional[str]:
     if not x:
         return x
     v = x.lower().strip()
+    # Mantén los modos válidos tal cual y solo mapea sinónimos a esos mismos literales
     mapping = {
-        # sinónimos comunes
+        # tops
         "top": "tops",
-        "tops": "tops",
         "ranking": "tops",
         "rank": "tops",
-        "over_time": "temporal",
-        "overtime": "temporal",
-        "temporal": "temporal",
-        "kpi": "kpis",
-        "kpis": "kpis",
-        "by_product": "kpis",
-        "by_restaurant": "kpis",
+        "tops": "tops",
+        # over_time
+        "over_time": "over_time",
+        "overtime": "over_time",
+        "over-time": "over_time",
+        "temporal": "over_time",
+        # by_product / by_restaurant: ¡NO los mapees a nada distinto!
+        "by-product": "by_product",
+        "por_producto": "by_product",
+        "by-restaurant": "by_restaurant",
+        "por_restaurante": "by_restaurant",
     }
     return mapping.get(v, v)
 
@@ -163,8 +167,8 @@ def tabular_insights(
 
     # Mapear modos “by_*” a KPIs
     internal_mode = mode_norm
-    if mode_norm in ("by_product", "by_restaurant"):
-        internal_mode = "kpis"
+    # if mode_norm in ("by_product", "by_restaurant"):
+    #     internal_mode = "kpis"
 
     # Construimos el DTO interno Pydantic (usa los valores normalizados)
     q = TabularQuery(
