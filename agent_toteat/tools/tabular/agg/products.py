@@ -61,7 +61,7 @@ class ProductsHandler(IModeHandler):
                 return []
 
             # 2) order_uid para contar órdenes distintas por producto
-            #    (resistente a 'order_id' repetido entre restaurantes)
+            
             df = df.copy()
             df["order_uid"] = df[RESTAURANT_ID].astype(str) + ":" + df[ORDER_ID].astype(str)
 
@@ -109,7 +109,7 @@ class ProductsHandler(IModeHandler):
                 prod = prod.head(topk)
 
             # 7) Serializar
-            return prod.to_dict(orient="records")  # type: ignore[return-value]
+            return prod.to_dict(orient="records")  
 
         data: List[Dict[str, Any]] = get_or_compute(_CACHE, key, _compute)
         return data

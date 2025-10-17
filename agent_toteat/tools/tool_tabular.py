@@ -12,13 +12,13 @@ from .tabular.config import AppConfig
 from .tabular.service import run_tabular_query
 from .tabular.dto import TabularQuery
 
-# Config por defecto (no exponer AppConfig en la firma pública)
+# Config por defecto
 DEFAULT_CFG = AppConfig()
 
 try:
-    import numpy as np  # opcional para castear np.* a tipos nativos
-except Exception:  # pragma: no cover
-    np = None  # type: ignore
+    import numpy as np  
+except Exception:  
+    np = None  
 
 
 # ------------------------------- Helpers -------------------------------------
@@ -26,7 +26,7 @@ def _norm_mode(x: Optional[str]) -> Optional[str]:
     if not x:
         return x
     v = x.lower().strip()
-    # Mantén los modos válidos tal cual y solo mapea sinónimos a esos mismos literales
+    # Normalizamos parametros
     mapping = {
         # tops
         "top": "tops",
@@ -38,7 +38,7 @@ def _norm_mode(x: Optional[str]) -> Optional[str]:
         "overtime": "over_time",
         "over-time": "over_time",
         "temporal": "over_time",
-        # by_product / by_restaurant: ¡NO los mapees a nada distinto!
+        # by_product / by_restaurant: 
         "by-product": "by_product",
         "por_producto": "by_product",
         "by-restaurant": "by_restaurant",
@@ -147,7 +147,7 @@ def tabular_insights(
     Parámetros:
       - mode: "tops" (ranking), "over_time" (series), "by_product"/"by_restaurant" (interpretados como KPIs).
       - scope: "restaurant" | "product". Se aceptan sinónimos como "by_restaurant" / "by_product".
-      - time_grain: "day" | "week" | "month" (solo para "over_time").
+      - time_grain: "day" | "iso_week" | "month" (solo para "over_time").
       - sort_by/sort_dir/top_k: criterio de ranking (para "tops" o cuando aplique).
       - date_from/date_to: rango "YYYY-MM-DD".
       - restaurants/products: filtros por id.
@@ -165,15 +165,13 @@ def tabular_insights(
     if top_k is not None and (not isinstance(top_k, int) or top_k <= 0):
         return {"ok": False, "mode": mode_norm, "data": [], "error": f"top_k inválido: {top_k}"}
 
-    # Mapear modos “by_*” a KPIs
+    # Mapear modos
     internal_mode = mode_norm
-    # if mode_norm in ("by_product", "by_restaurant"):
-    #     internal_mode = "kpis"
 
     # Construimos el DTO interno Pydantic (usa los valores normalizados)
     q = TabularQuery(
         mode=internal_mode,
-        scope=scope_norm,          # solo 'restaurant' | 'product' pasan la validación del DTO
+        scope=scope_norm,         
         time_grain=time_grain,
         sort_by=sort_by,
         sort_dir=sort_dir,
@@ -187,7 +185,7 @@ def tabular_insights(
     try:
         result_obj = run_tabular_query(q=q, app_cfg=DEFAULT_CFG)
         return _normalize_result(result_obj)
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:  
         return {
             "ok": False,
             "mode": internal_mode,

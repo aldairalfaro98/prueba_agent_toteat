@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Final
 
 # —— Rutas ——
-DATA_DIR: Final[Path] = Path(os.getenv("GASTROSOFT_DATA_DIR", "."))  # ajustable por .env
+DATA_DIR: Final[Path] = Path(os.getenv("GASTROSOFT_DATA_DIR", ".")) 
 CSV_FILENAME: Final[str] = os.getenv("GASTROSOFT_SALES_CSV", "Prueba Tecnica AI Engineer/gastrosoft_sales_2025.csv")
 CSV_PATH: Final[Path] = DATA_DIR / CSV_FILENAME
 

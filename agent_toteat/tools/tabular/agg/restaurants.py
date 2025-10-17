@@ -79,7 +79,7 @@ class RestaurantsHandler(IModeHandler):
                 rest["net_total"] > 0, rest["tax_total"] / rest["net_total"], np.nan
             )
 
-            # 4) Orden estable por defecto (si no piden sort_by explícito)
+            # 4) Orden estable por defecto 
             sort_by = q.sort_by or "net_total"
             reverse = (q.sort_dir == "desc")
             rest = rest.sort_values(
@@ -95,7 +95,7 @@ class RestaurantsHandler(IModeHandler):
                 rest = rest.head(topk)
 
             # 6) Serializar a lista de dicts (valores crudos; la UI puede formatear)
-            return rest.to_dict(orient="records")  # type: ignore[return-value]
+            return rest.to_dict(orient="records") 
 
         data: List[Dict[str, Any]] = get_or_compute(_CACHE, key, _compute)
         return data

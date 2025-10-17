@@ -231,7 +231,7 @@ Gráficas: la tool devuelve datos; si quieres charts, los arma el agente/UI con 
 #   "query": "<pregunta del usuario en español>",
 #   "scope": "auto" | "files",
 #   "files": ["data/guia_ordenes_md.md", ...],   # solo si scope="files"
-#   "top_k": 8                                   # opcional
+#   "top_k": 20                                  # opcional
 # }
 
 # Reglas de decisión (cuándo usar este sub-agente):

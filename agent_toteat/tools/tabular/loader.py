@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Optional, List
 import logging
 import pandas as pd
-
+import pyarrow
 from .config import AppConfig
 from .schema import (
     ALL_COLS,
@@ -51,7 +51,6 @@ class _LazyRepo:
     def _select_engine() -> Optional[str]:
         """Usa pyarrow si está disponible; si no, deja que pandas elija."""
         try:
-            import pyarrow  # noqa: F401
             return "pyarrow"
         except Exception:
             return None
@@ -157,7 +156,6 @@ class _LazyRepo:
         engine = self._select_engine()
         logger.info("Cargando CSV desde %s (engine=%s)", csv_path, engine or "default")
 
-        # Nota: con engine="pyarrow" no usar low_memory
         lines = pd.read_csv(
             csv_path,
             usecols=ALL_COLS,  # asegura esquema exacto
@@ -186,5 +184,5 @@ def get_repo(cfg: Optional[AppConfig] = None) -> DataRepository:
     return _lazy_repo.get(cfg)
 
 
-# API pública reutilizable por handlers (exporta función pura)
+# API pública reutilizable por handlers
 build_orders_from_lines = _LazyRepo.build_orders_from_lines

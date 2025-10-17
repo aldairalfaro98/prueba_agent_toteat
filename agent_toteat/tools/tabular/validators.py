@@ -65,7 +65,7 @@ def resolve_top_k(q: TabularQuery, cfg: AppConfig, unique_n: Optional[int] = Non
         return TopKResolution(auto_top, "auto")
     # entero
     try:
-        v = int(tk)  # type: ignore[arg-type]
+        v = int(tk)  
     except Exception as exc:
         raise InvalidParam("top_k debe ser entero o 'auto'.") from exc
     v = max(cfg.top_k_min, min(v, cfg.top_k_max))

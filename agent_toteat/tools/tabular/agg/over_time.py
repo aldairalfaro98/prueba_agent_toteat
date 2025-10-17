@@ -23,11 +23,11 @@ def _resolve_period_col(grain: str) -> str:
     """Mapea el grain lógico al nombre de columna disponible en DF."""
     g = (grain or "month").strip().lower()
     if g in ("day", "daily"):
-        return "date"        # DATE (datetime64[ns]), lo convertiremos a date-only string
+        return "date"        #Lo convertiremos a date-only string
     if g in ("week", "iso_week", "weekly"):
-        return "iso_week"    # ej. '2025-W05'
-    # default / 'month'
-    return "year_month"      # ej. '2025-03'
+        return "iso_week"   
+    
+    return "year_month"     
 
 
 class OverTimeHandler(IModeHandler):
@@ -61,7 +61,7 @@ class OverTimeHandler(IModeHandler):
             # 3) Determinar columna de periodo
             period_col = _resolve_period_col(grain)
 
-            # Normalizar 'day' a string 'YYYY-MM-DD' amigable (no tz)
+            # Normalizar 'day' a string 'YYYY-MM-DD' 
             if period_col == "date":
                 period_series = pd.to_datetime(orders[DATE], errors="coerce").dt.date.astype(str)
             else:
@@ -83,7 +83,7 @@ class OverTimeHandler(IModeHandler):
                 ticket_net_median=("ticket_net", "median"),
             ).reset_index()
 
-            # Ratios agregados: sum(tip)/sum(net), sum(tax)/sum(net)
+            
             ot["pct_tip_over_net"] = np.where(
                 ot["net_total"] > 0, ot["tip_total"] / ot["net_total"], np.nan
             )
@@ -97,10 +97,8 @@ class OverTimeHandler(IModeHandler):
                 ot["period_start"] = pd.to_datetime(ot["period"], format="%Y-%m-%d", errors="coerce")
             elif period_col == "year_month":
                 ot["period_start"] = pd.to_datetime(ot["period"] + "-01", errors="coerce")
-            else:  # iso_week "YYYY-Www" -> tomamos lunes de esa semana ISO
-                # Pandas no parsea directo 'YYYY-Www', hacemos pequeño truco:
-                # Convertimos a 'YYYY-Www-1' (lunes), y usamos to_datetime con formato ISO week.
-                # Nota: requiere pandas >= 1.1 para %G y %V. Alternativa: usar isocalendar manual.
+            else:  
+               
                 try:
                     ot["period_start"] = pd.to_datetime(
                         ot["period"].str.replace("W", "-") + "-1",
@@ -108,18 +106,18 @@ class OverTimeHandler(IModeHandler):
                         errors="coerce",
                     )
                 except Exception:
-                    # Fallback: ordenar por string si hubiera problemas
+                    # Fallback: ordenar por string 
                     ot["period_start"] = ot["period"]
 
             ot = ot.sort_values(by="period_start", ascending=True, kind="mergesort")
 
-            # 6) top_k: si llega, nos quedamos con los ÚLTIMOS N períodos (más recientes)
+            # 6) top_k: 
             if q.top_k is not None:
                 topk = resolve_top_k(q, AppConfig(), unique_n=int(len(ot))).value
                 ot = ot.tail(topk)
 
             # 7) Serializar
-            return ot.drop(columns=["period_start"]).to_dict(orient="records")  # type: ignore[return-value]
+            return ot.drop(columns=["period_start"]).to_dict(orient="records")  
 
         data: List[Dict[str, Any]] = get_or_compute(_CACHE, key, _compute)
         return data
