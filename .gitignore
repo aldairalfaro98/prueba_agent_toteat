@@ -68,4 +68,3 @@ Thumbs.db
 *.sqlite*
 tmp/
 temp/
-*requirements.txt

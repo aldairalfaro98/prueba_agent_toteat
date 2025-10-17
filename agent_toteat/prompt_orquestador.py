@@ -27,6 +27,7 @@ está realmente ambigua.
 ──────────────────────────────────────────────────────────────────────────────
 CÓMO DELEGAR A agent_tablas (AgentTool)
 ──────────────────────────────────────────────────────────────────────────────
+Brinda una breve descripción de los alcances que tienes y que pueden consultar con este agente sin usar datos internos de tu funcionamiento para gente que no conoce la herramienta ni tu funcionamiento.
 Al delegar, envía un breve “delegation brief” que incluya:
 1) objetivo_usuario: resumen claro de lo que quiere el usuario.
 2) tool_sugerida: "tabular_insights".
