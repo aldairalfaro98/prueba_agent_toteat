@@ -22,5 +22,5 @@ class DiagnosticsHandler:
             "rows": int(len(lines)),
             "columns": list(lines.columns),
         }
-        # Fase 3: cardinalidades, claves, cobertura temporal real
+        # cardinalidades, claves, cobertura temporal real
         return [out]

@@ -58,7 +58,7 @@ def build_query_key(q: TabularQuery, mode_override: Optional[str] = None, extra:
         _normalized_list(q.products),
         q.sort_by,
         q.sort_dir,
-        q.top_k,    # "auto" se resuelve antes si decides; puedes quitarlo y usar el valor resuelto
+        q.top_k,    # "auto" se resuelve antes si no se especifica.
         q.scope,
     )
     if extra:

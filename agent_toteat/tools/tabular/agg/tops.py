@@ -47,7 +47,7 @@ class TopsHandler(IModeHandler):
             "qty_total", "orders_distinct", "gross_total", "net_total", "tax_total", "tip_total",
             "unit_price_net_avg"
         },
-        # Si tu ProductsHandler soporta por (restaurante, producto), permitimos mismas métricas de producto:
+        
         "by_restaurant": {
             "qty_total", "orders_distinct", "gross_total", "net_total", "tax_total", "tip_total",
             "unit_price_net_avg"
@@ -64,17 +64,17 @@ class TopsHandler(IModeHandler):
             logger.warning("Scope no reconocido '%s'; usando 'restaurant'", raw_scope)
             scope = "restaurant"
 
-        # Clave de caché para tops (incluye scope y sort)
+        # Clave de caché para tops 
         key = build_query_key(q, extra={"handler": "tops", "scope": scope})
 
         def _compute() -> List[Dict[str, Any]]:
-            # 1) Obtenemos base completo SIN sort/top_k para poder reusar caché entre variantes
+            # 1) Obtenemos base completo
             if scope == "restaurant":
                 base_q = _clone_without_sort_and_topk(q, scope_override="restaurant")
                 base = RestaurantsHandler().run(repo, base_q)
                 id_keys = ("restaurant_id",)
             elif scope == "by_restaurant":
-                # Nota: si tu ProductsHandler NO soporta 'by_restaurant', cambia a 'product' aquí
+                
                 base_q = _clone_without_sort_and_topk(q, scope_override="by_restaurant")
                 base = ProductsHandler().run(repo, base_q)
                 id_keys = ("restaurant_id", "product_id")
@@ -108,7 +108,7 @@ class TopsHandler(IModeHandler):
 
             base_sorted = sorted(base, key=_sort_key, reverse=reverse)
 
-            # 4) Aplicar top_k (incluye 'auto' si tu resolve_top_k lo maneja)
+            # 4) Aplicar top_k (incluye 'auto')
             topk = resolve_top_k(q, AppConfig(), unique_n=len(base_sorted)).value if q.top_k is not None else len(base_sorted)
             return base_sorted[:topk]
 

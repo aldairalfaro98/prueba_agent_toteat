@@ -12,7 +12,7 @@ class LocaleConfig:
     """
     locale: str = "es-MX"
     currency: str = "MXN"
-    currency_symbol: str = "MXN$"  # puedes cambiar a "$" si así lo prefieres
+    currency_symbol: str = "MXN$"  # símbolo simple; se puede ajustar para divisas comunes
     decimal_sep: str = "."
     thousand_sep: str = ","
 
@@ -25,10 +25,8 @@ def format_currency(value: Optional[float], cfg: LocaleConfig = DEFAULT_LOCALE, 
     if value is None:
         return "-"
     # Sencillo: símbolo + número con miles y decimales (usamos separadores simples)
-    # Nota: Si más adelante quieres locale real, este es el punto a adaptar.
     q = round(float(value), ndigits)
     # Insertar separadores de miles de forma básica:
-    # "{:,.2f}" usa separador US, lo sustituimos por el deseado si difiere.
     s = f"{q:,.{ndigits}f}"
     if DEFAULT_LOCALE.thousand_sep != "," or DEFAULT_LOCALE.decimal_sep != ".":
         s = s.replace(",", "X").replace(".", cfg.decimal_sep).replace("X", cfg.thousand_sep)
@@ -55,9 +53,9 @@ def add_formatted_fields(
     """
     out: Dict[str, object] = dict(row)
     for c in currency_fields:
-        v = row.get(c)  # type: ignore[assignment]
+        v = row.get(c)  
         out[f"{c}{suffix}"] = format_currency(v if isinstance(v, (int, float)) else None, cfg=cfg)
     for p in percent_fields:
-        v = row.get(p)  # type: ignore[assignment]
+        v = row.get(p)  
         out[f"{p}{suffix}"] = format_percent(v if isinstance(v, (int, float)) else None)
     return out

@@ -50,7 +50,7 @@ root_agent = LlmAgent (
     
     tools=[
         AgentTool(agent=agent_tabular),        # <-- agente como tool
-        AgentTool(agent=agent_unstructured),   # <-- idem para no estructurado (cuando esté listo)
+        AgentTool(agent=agent_unstructured),   # <-- agente como tool
     ],
 )
 

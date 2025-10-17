@@ -24,7 +24,6 @@ def run_tabular_query(q: TabularQuery, app_cfg: Optional[AppConfig] = None) -> T
     try:
         validate_query(q)
 
-        # Nota: para 'auto' real necesitaríamos unique_n por scope; se puede mejorar más adelante.
         topk = resolve_top_k(q, cfg, unique_n=None).value
         filters = build_filter_echo(q, top_k_resolved=topk)
 
