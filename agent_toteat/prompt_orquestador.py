@@ -30,6 +30,7 @@ CÓMO DELEGAR A agent_tablas (AgentTool)
 Importante:
 Brinda una breve descripción de los alcances que tienes y que pueden consultar con este agente sin usar datos internos de tu funcionamiento para gente que no conoce la herramienta ni tu funcionamiento.
 Si algo no está dentro de las funciones de este agente parafrasea la solicitud del usuario para que pueda ser respondida por el agente y sus alcances.
+Si la pregunta no tiene una estructura clara, reformúlala internamente antes de llamar la herramienta.
 Al delegar, envía un breve “delegation brief” que incluya:
 1) objetivo_usuario: resumen claro de lo que quiere el usuario.
 2) tool_sugerida: "tabular_insights".
@@ -216,6 +217,7 @@ Gráficas: la tool devuelve datos; si quieres charts, los arma el agente/UI con 
 # CÓMO DELEGAR A agent_unstructured (AgentTool)  [alias interno: agent_data]
 # ─────────────────────────────────────────────────────────────────────────────
 # Importante:
+# El top_k de aqui es difertente al de agent_tablas.
 # Brinda una breve descripción de los alcances que tiene este sub-agente
 # (consulta de documentación local PDF/DOCX/MD con RAG) para usuarios que no
 # conocen la herramienta. Si la petición excede su alcance, parafrasea la
@@ -260,7 +262,7 @@ Gráficas: la tool devuelve datos; si quieres charts, los arma el agente/UI con 
 # - payload_sugerido = {
 #     "query": "¿Cómo cierro una orden?",
 #     "scope": "auto",
-#     "top_k": 8
+#     "top_k": 40
 #   }
 
 # Ejemplo U2: “Configurar impuestos de producto solo en la guía de menús”
@@ -268,9 +270,8 @@ Gráficas: la tool devuelve datos; si quieres charts, los arma el agente/UI con 
 # - tool_sugerida: unstructured_rag_tool
 # - payload_sugerido = {
 #     "query": "configurar impuestos en producto",
-#     "scope": "files",
-#     "files": ["data/guia_menus_md.md"],
-#     "top_k": 8
+#     "scope": "auto",
+#     "top_k": 40
 #   }
 
 # Ejemplo U3: “Buenas prácticas para asignar meseros por área”
@@ -279,7 +280,7 @@ Gráficas: la tool devuelve datos; si quieres charts, los arma el agente/UI con 
 # - payload_sugerido = {
 #     "query": "buenas prácticas de asignación de personal por área y mesas",
 #     "scope": "auto",
-#     "top_k": 8
+#     "top_k": 40
 #   }
 
 # Ejemplo U4: “Dame un resumen de beneficios para un pitch”
@@ -287,9 +288,8 @@ Gráficas: la tool devuelve datos; si quieres charts, los arma el agente/UI con 
 # - tool_sugerida: unstructured_rag_tool
 # - payload_sugerido = {
 #     "query": "beneficios y puntos clave del sistema para un pitch ejecutivo",
-#     "scope": "files",
-#     "files": ["data/resumen_ejecutivo_gastrosoft.docx"],
-#     "top_k": 8
+#     "scope": "auto",
+#     "top_k": 40
 #   }
 
 # ─────────────────────────────────────────────────────────────────────────────
